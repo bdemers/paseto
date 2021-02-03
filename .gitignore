@@ -43,3 +43,4 @@ TODO*.md
 
 # TS test
 types/*.js
+.idea

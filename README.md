@@ -2,21 +2,7 @@
 
 > [PASETO](https://paseto.io): <strong>P</strong>latform-<strong>A</strong>gnostic <strong>SE</strong>curity <strong>TO</strong>kens for Node.js with minimal dependencies
 
-## Implemented specs & features
-
-All crypto operations are using their async node's crypto API, where such API is not available the
-operation is pushed to a [Worker Thread](https://nodejs.org/api/worker_threads.html) so that your
-main thread's I/O is not blocked.
-
-<br>
-
-|  | v1.local | v1.public | v2.local | v2.public |
-| -- | -- | -- | -- | -- |
-| supported? | ✓ | ✓ | ✓ | ✓ |
-
-## Support
-
-If you or your business use paseto, please consider becoming a [sponsor][support-sponsor] so I can continue maintaining it and adding new features carefree.
+**NOTE:** This is a fork of [panva/paseto](https://github.com/panva/paseto) which adds browser support 
 
 ## Documentation
 
@@ -26,7 +12,7 @@ If you or your business use paseto, please consider becoming a [sponsor][support
 
 ## Usage
 
-For its improvements in the crypto module ⚠️ the minimal Node.js version required is **v12.0.0** ⚠️
+For its improvements in the crypto module ⚠️ the minimal Node.js version required is **v15.5.0** ⚠️
 
 Installing paseto
 
@@ -87,81 +73,7 @@ const { V2: { decrypt, verify } } = paseto
 
 #### Keys
 
-Node's [KeyObject](https://nodejs.org/api/crypto.html#crypto_class_keyobject) is ultimately what the
-library works with, depending on the operation, if the key parameter is not already a KeyObject
-instance the corresponding `create` function will be called with the input
-
-- [`crypto.createSecretKey()`](https://nodejs.org/api/crypto.html#crypto_crypto_createsecretkey_key)
-  for local encrypt/decrypt operations
-- [`crypto.createPublicKey()`](https://nodejs.org/api/crypto.html#crypto_crypto_createpublickey_key)
-  for public verify operations
-- [`crypto.createPrivateKey()`](https://nodejs.org/api/crypto.html#crypto_crypto_createprivatekey_key)
-  for public sign operations
-
-You can also generate keys valid for the given operation directly through paseto
-
-```js
-const crypto = require('crypto')
-const { V1, V2 } = paseto
-
-(async () => {
-  {
-    const key = await V1.generateKey('local')
-    console.log(key instanceof crypto.KeyObject)
-    // true
-    console.log(key.type === 'secret')
-    // true
-    console.log(key.symmetricKeySize === 32)
-    // true
-  }
-  {
-    const key = await V1.generateKey('public')
-    console.log(key instanceof crypto.KeyObject)
-    // true
-    console.log(key.type === 'private')
-    // true
-    console.log(key.asymmetricKeyType === 'rsa')
-    // true
-  }
-  {
-    const key = await V2.generateKey('local')
-    console.log(key instanceof crypto.KeyObject)
-    // true
-    console.log(key.type === 'secret')
-    // true
-    console.log(key.symmetricKeySize === 32)
-    // true
-  }
-  {
-    const key = await V2.generateKey('public')
-    console.log(key instanceof crypto.KeyObject)
-    // true
-    console.log(key.type === 'private')
-    // true
-    console.log(key.asymmetricKeyType === 'ed25519')
-    // true
-  }
-})()
-```
-
-## FAQ
-
-#### Semver?
-
-**Yes.** Everything that's either exported in the TypeScript definitions file or
-[documented][documentation] is subject to
-[Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html). The rest is to be considered
-private API and is subject to change between any versions.
-
-#### How do I use it outside of Node.js
-
-It is **only built for Node.js** environment - it builds on top of the `crypto` module and requires
-the KeyObject API that was added in Node.js v11.6.0 and one-shot sign/verify API added in v12.0.0
-
-#### What is the ultimate goal?
-
-- **No dependencies**, the moment `XChaCha20-Poly1305` is supported by OpenSSL and therefore node's
-`crypto` the direct dependency count will go down from 1 to 0. 🚀
+TODO:
 
 
 [documentation]: https://github.com/panva/paseto/blob/master/docs/README.md
