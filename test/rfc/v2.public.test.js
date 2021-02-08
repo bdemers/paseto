@@ -54,13 +54,15 @@ test('sign A.2.2.2.  Test Vector v2-S-2', async t => {
                 'R0N_Ec2QxJFFpvQAs7h9HtKwbVK2n1MJ3Rz-hwe8KUqjnd8FAnIJZ601' +
                 'tp7lGkguU63oGbomhoBw.eyJraWQiOiJ6VmhNaVBCUDlmUmYyc25FY1Q' +
                 '3Z0ZUaW9lQTlDT2NOeTlEZmdMMVc2MGhhTiJ9'
-  const pem = '-----BEGIN PRIVATE KEY-----\n' +
-              'MC4CAQAwBQYDK2VwBCIEILTL+0PfTOIQcn2VPkpxMwf6Gbt9n4UEFDjZ4RuUKjd0\n' +
-              '-----END PRIVATE KEY-----'
+  const pem = `-----BEGIN PRIVATE KEY-----
+MC4CAQAwBQYDK2VwBCIEILTL+0PfTOIQcn2VPkpxMwf6Gbt9n4UEFDjZ4RuUKjd0
+-----END PRIVATE KEY-----`
 
   const payload = { data: 'this is a signed message', exp: '2019-01-01T00:00:00+00:00' }
   const footer = JSON.stringify({ kid: 'zVhMiPBP9fRf2snEcT7gFTioeA9COcNy9DfgL1W60haN' })
 
-  t.deepEqual(await V2.sign(payload, pem, { footer, iat: false }), token)
-  t.deepEqual(decode(token, { parse: false }), { purpose: 'public', version: 'v2', footer: Buffer.from(footer), payload: Buffer.from(JSON.stringify(payload)) })
+  const signResult = await V2.sign(payload, pem, { footer, iat: false })
+
+  t.deepEqual(signResult, token)
+  t.deepEqual(decode(signResult, { parse: false }), { purpose: 'public', version: 'v2', footer: Buffer.from(footer), payload: Buffer.from(JSON.stringify(payload)) })
 })
